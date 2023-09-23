@@ -1,0 +1,12 @@
+<resources>
+    <string name="app_name"><font color='#32CD32'>Lingua</font><font color='#FF7F50'>Dia</font></string>
+
+    <!-- Splash Screen -->
+    <string name="splash_description">Welcome to the magical world of words!</string>
+
+    <!-- Start Screen -->
+
+    <!-- Search Screen -->
+
+    <!-- Personal Screen -->
+</resources>
