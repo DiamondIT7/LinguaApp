@@ -1,7 +1,8 @@
 package com.example.linguaapp.screens.search
 
-import android.media.AudioManager
+import android.media.AudioAttributes
 import android.media.MediaPlayer
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.Toast
@@ -11,7 +12,7 @@ import com.example.linguaapp.model.Phonetic
 
 class PhoneticsAdapter : RecyclerView.Adapter<PhoneticsAdapter.PhoneticsViewHolder>() {
 
-    private var listPhonetics = emptyList<Phonetic>()
+    var listPhonetics = emptyList<Phonetic>()
 
     class PhoneticsViewHolder(val binding: PhoneticListItemBinding) : RecyclerView.ViewHolder(binding.root)
 
@@ -29,14 +30,27 @@ class PhoneticsAdapter : RecyclerView.Adapter<PhoneticsAdapter.PhoneticsViewHold
         holder.binding.ibPhoneticsItem.setOnClickListener {
             val player = MediaPlayer()
             try {
-                player.setAudioStreamType(AudioManager.STREAM_MUSIC)
+                val audioAttributes = AudioAttributes.Builder()
+                    .setContentType(AudioAttributes.CONTENT_TYPE_MUSIC)
+                    .setUsage(AudioAttributes.USAGE_MEDIA)
+                    .build()
+
+                player.setAudioAttributes(audioAttributes)
                 player.setDataSource("https:${listPhonetics[position].audio}")
-                player.prepare()
-                player.start()
+                player.prepareAsync()
+                player.setOnPreparedListener {
+                    // Start playing when prepared
+                    player.start()
+                }
+                player.setOnCompletionListener {
+                    // Release the MediaPlayer when playback is completed
+                    player.release()
+                }
             } catch (e: Exception) {
                 e.printStackTrace()
-                Toast.makeText(holder.itemView.context, "Couldn't play audio!", Toast.LENGTH_SHORT)
-                    .show()
+                Log.e("MediaPlayer", "Error playing audio: ${e.message}")
+                Toast.makeText(holder.itemView.context, "Couldn't play audio!", Toast.LENGTH_SHORT).show()
+                player.release() // Release the MediaPlayer in case of an error
             }
         }
     }

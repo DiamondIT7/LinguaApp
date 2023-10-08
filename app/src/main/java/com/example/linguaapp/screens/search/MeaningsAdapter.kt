@@ -9,7 +9,13 @@ import com.example.linguaapp.model.Meaning
 
 class MeaningsAdapter: RecyclerView.Adapter<MeaningsAdapter.MeaningsViewHolder>() {
 
-    private var listMeanings = emptyList<Meaning>()
+    var listMeanings = emptyList<Meaning>()
+
+    // Define a function to update the adapter data
+    fun updateData(newData: List<Meaning>) {
+        listMeanings = newData
+        notifyDataSetChanged()
+    }
 
     class MeaningsViewHolder(val binding: MeaningsListItemBinding) : RecyclerView.ViewHolder(binding.root)
 
@@ -23,8 +29,15 @@ class MeaningsAdapter: RecyclerView.Adapter<MeaningsAdapter.MeaningsViewHolder>(
     }
 
     override fun onBindViewHolder(holder: MeaningsViewHolder, position: Int) {
-        holder.binding.tvMeaningsItem.text = listMeanings[position].partOfSpeech
+        val meaning = listMeanings[position]
+
+        holder.binding.tvMeaningsItem.text = meaning.partOfSpeech
+
+        // Pass the list of definitions to the DefinitionsAdapter
+        val definitionsAdapter = DefinitionsAdapter(meaning.definitions)
+
         holder.binding.rvMeaningsItem.setHasFixedSize(true)
         holder.binding.rvMeaningsItem.layoutManager = GridLayoutManager(holder.itemView.context, 1)
+        holder.binding.rvMeaningsItem.adapter = definitionsAdapter
     }
 }
