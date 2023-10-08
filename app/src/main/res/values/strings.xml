@@ -7,6 +7,8 @@
     <!-- Start Screen -->
 
     <!-- Search Screen -->
+    <string name="word_main">Word</string>
+    <string name="meanings">Meanings</string>
 
     <!-- Personal Screen -->
 </resources>

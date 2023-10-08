@@ -6,7 +6,7 @@ import retrofit2.Response
 
 class Repository {
 
-    suspend fun getWordInfo(): Response<ApiResponse>{
-        return RetrofitInstance.api.getWord()
+    suspend fun getWordInfo(word: String): Response<ApiResponse>{
+        return RetrofitInstance.api.getWord(word)
     }
 }
