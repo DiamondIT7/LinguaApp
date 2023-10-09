@@ -11,12 +11,6 @@ class MeaningsAdapter: RecyclerView.Adapter<MeaningsAdapter.MeaningsViewHolder>(
 
     var listMeanings = emptyList<Meaning>()
 
-    // Define a function to update the adapter data
-    fun updateData(newData: List<Meaning>) {
-        listMeanings = newData
-        notifyDataSetChanged()
-    }
-
     class MeaningsViewHolder(val binding: MeaningsListItemBinding) : RecyclerView.ViewHolder(binding.root)
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MeaningsViewHolder {

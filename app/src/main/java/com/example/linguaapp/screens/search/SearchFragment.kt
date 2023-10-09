@@ -34,13 +34,18 @@ class SearchFragment : Fragment() {
             layoutManager = LinearLayoutManager(requireContext())
             adapter = phoneticsAdapter
             isNestedScrollingEnabled = false
+            visibility = View.GONE
         }
 
         binding.rvMeanings.apply {
             layoutManager = LinearLayoutManager(requireContext())
             adapter = meaningsAdapter
             isNestedScrollingEnabled = false
+            visibility = View.GONE
         }
+
+        binding.tvWordMain.visibility = View.GONE
+        binding.tvMeanings.visibility = View.GONE
 
         binding.searchBar.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String?): Boolean {
@@ -70,17 +75,22 @@ class SearchFragment : Fragment() {
                 }
 
                 meaningsAdapter.listMeanings = meanings // Update the list in your adapter
-                meaningsAdapter.notifyDataSetChanged() // Notify the adapter that the data has changed
+                meaningsAdapter.notifyDataSetChanged()
 
                 // Update the phonetics adapter with the new data
-                phoneticsAdapter.listPhonetics = phonetics // Update the list in your phoneticsAdapter
+                phoneticsAdapter.listPhonetics = phonetics
                 phoneticsAdapter.notifyDataSetChanged() // Notify the phoneticsAdapter that the data has changed
+
+                binding.tvSearchDefault.visibility = View.GONE
+                binding.tvWordMain.visibility = View.VISIBLE
+                binding.tvMeanings.visibility = View.VISIBLE
+                binding.rvPhonetics.visibility = View.VISIBLE
+                binding.rvMeanings.visibility = View.VISIBLE
 
                 // Update the word text view
                 binding.tvWordMain.text = binding.searchBar.query // Set the user's search query as the word
             }
         }
-
 
         return binding.root
     }

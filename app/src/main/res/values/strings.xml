@@ -9,6 +9,7 @@
     <!-- Search Screen -->
     <string name="word_main">Word</string>
     <string name="meanings">Meanings</string>
+    <string name="search_default">Let\'s find something new!</string>
 
     <!-- Personal Screen -->
 </resources>

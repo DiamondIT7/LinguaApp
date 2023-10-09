@@ -36,7 +36,7 @@ class PhoneticsAdapter : RecyclerView.Adapter<PhoneticsAdapter.PhoneticsViewHold
                     .build()
 
                 player.setAudioAttributes(audioAttributes)
-                player.setDataSource("https:${listPhonetics[position].audio}")
+                player.setDataSource(listPhonetics[position].audio.toString())
                 player.prepareAsync()
                 player.setOnPreparedListener {
                     // Start playing when prepared
@@ -49,8 +49,9 @@ class PhoneticsAdapter : RecyclerView.Adapter<PhoneticsAdapter.PhoneticsViewHold
             } catch (e: Exception) {
                 e.printStackTrace()
                 Log.e("MediaPlayer", "Error playing audio: ${e.message}")
-                Toast.makeText(holder.itemView.context, "Couldn't play audio!", Toast.LENGTH_SHORT).show()
-                player.release() // Release the MediaPlayer in case of an error
+                Toast.makeText(holder.itemView.context, "Couldn't play audio!", Toast.LENGTH_SHORT)
+                    .show()
+                player.release()
             }
         }
     }
