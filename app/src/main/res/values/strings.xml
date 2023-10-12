@@ -5,11 +5,16 @@
     <string name="splash_description">Welcome to the magical world of words!</string>
 
     <!-- Start Screen -->
+    <string name="collection_name">Collection name</string>
+    <string name="collection_size">20 words</string>
 
     <!-- Search Screen -->
     <string name="word_main">Word</string>
     <string name="meanings">Meanings</string>
     <string name="search_default">Let\'s find something new!</string>
 
+    <!-- Settings Screen -->
+    <string name="go_back">Go Back</string>
+    <string name="start">Start</string>
     <!-- Personal Screen -->
 </resources>
