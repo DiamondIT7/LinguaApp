@@ -16,5 +16,7 @@
     <!-- Settings Screen -->
     <string name="go_back">Go Back</string>
     <string name="start">Start</string>
+    <string name="previous">Previous</string>
+    <string name="next">Next</string>
     <!-- Personal Screen -->
 </resources>

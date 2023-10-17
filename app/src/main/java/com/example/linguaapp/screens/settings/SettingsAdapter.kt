@@ -10,6 +10,13 @@ class SettingsAdapter(private val listSettings: MutableList<SWord>): RecyclerVie
 
     class SettingsViewHolder(val binding: SettingsListItemBinding) : RecyclerView.ViewHolder(binding.root)
 
+    // Create a mutable map to store selected words with their quantities
+    private val selectedWordsWithQuantities: MutableMap<String, Int> = mutableMapOf()
+
+    fun getSelectedWordsWithQuantities(): Map<String, Int> {
+        return selectedWordsWithQuantities
+    }
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SettingsViewHolder {
         val binding = SettingsListItemBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return SettingsViewHolder(binding)
@@ -28,10 +35,13 @@ class SettingsAdapter(private val listSettings: MutableList<SWord>): RecyclerVie
         numberPicker.maxValue = 10
         numberPicker.wrapSelectorWheel = false
 
+        // Initially set the value to the word's quantity
+        numberPicker.value = word.quantity
+
         // Handle NumberPicker value changes
-        numberPicker.setOnValueChangedListener { picker, oldVal, newVal ->
-            // Update the quantity in the SWord object when a new value is selected
-            word.quantity = newVal
+        numberPicker.setOnValueChangedListener { _, _, newVal ->
+            // Update the selectedWordsWithQuantities map
+            selectedWordsWithQuantities[word.name] = newVal
         }
     }
 }
