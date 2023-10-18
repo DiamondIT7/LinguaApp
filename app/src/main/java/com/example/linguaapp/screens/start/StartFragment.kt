@@ -35,21 +35,21 @@ class StartFragment : Fragment() {
                     "Fruits" -> {
                         mutableListOf(
                             SWord("Apple", 1),
-                            SWord("Banana", 2),
-                            SWord("Watermelon", 5),
-                            SWord("Pear", 3),
-                            SWord("Grape", 2),
-                            SWord("Pamella", 4),
+                            SWord("Banana", 1),
+                            SWord("Watermelon", 1),
+                            SWord("Pear", 1),
+                            SWord("Grape", 1),
+                            SWord("Strawberry", 1),
                             SWord("Fruit", 1)
                         )
                     }
                     "Study" -> {
                         mutableListOf(
-                            SWord("Math", 3),
-                            SWord("Pen", 7),
-                            SWord("Literature", 5),
-                            SWord("Physics", 2),
-                            SWord("Classmate", 2)
+                            SWord("Math", 1),
+                            SWord("Pen", 1),
+                            SWord("Literature", 1),
+                            SWord("Physics", 1),
+                            SWord("Classmate", 1)
                         )
                     }
                     else -> emptyList()

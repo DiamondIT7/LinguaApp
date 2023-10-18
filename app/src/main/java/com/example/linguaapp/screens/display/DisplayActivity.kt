@@ -17,8 +17,10 @@ class DisplayActivity : AppCompatActivity() {
     private lateinit var binding: ActivityDisplayBinding
     private lateinit var phoneticsAdapter: PhoneticsAdapter
     private lateinit var meaningsAdapter: MeaningsAdapter
-    private var shuffledWordList: MutableList<SWord> = mutableListOf()
+    private var wordsWithQuantities: MutableList<SWord> = mutableListOf()
     private var currentWordIndex: Int = 0
+    private var wordsToDisplay: MutableList<SWord> = mutableListOf()
+    private lateinit var wordsToDisplayCopy: MutableList<SWord>
     private lateinit var viewModel: SearchViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -30,43 +32,51 @@ class DisplayActivity : AppCompatActivity() {
         phoneticsAdapter = PhoneticsAdapter()
         meaningsAdapter = MeaningsAdapter()
 
-        // Get the shuffled list of words and their quantities from the intent
-        val selectedWordsString = intent.getStringExtra("selectedWords")
-        val selectedWords: Map<String, Int> = Gson().fromJson(selectedWordsString, object : TypeToken<Map<String, Int>>() {}.type)
+        // Get the list of words with quantities
+        val wordsWithQuantitiesString = intent.getStringExtra("wordsWithQuantities")
+        wordsWithQuantities = Gson().fromJson(wordsWithQuantitiesString, object : TypeToken<List<SWord>>() {}.type)
 
-        // Extract the words from the map and create a list
-        shuffledWordList = selectedWords.map { SWord(it.key, it.value) }.toMutableList()
+        // Create a copy of the list for display
+        wordsToDisplay.addAll(wordsWithQuantities)
+        wordsToDisplay.shuffle()
+        wordsToDisplayCopy = mutableListOf()
 
-        if (shuffledWordList.isNotEmpty()) {
-            // Shuffle the list of words for randomization
-            shuffledWordList.shuffle()
+        // Display the first word
+        displayNextWord()
 
-            // Display the first word and its information
-            displayWordInfo(shuffledWordList[currentWordIndex])
+        binding.btNext.setOnClickListener {
+            // Display the next word
+            displayNextWord()
+        }
 
-            // Handle "Next" button click
-            binding.btNext.setOnClickListener {
-                currentWordIndex++
-                if (currentWordIndex < shuffledWordList.size) {
-                    // Display the next word
-                    displayWordInfo(shuffledWordList[currentWordIndex])
-                } else {
-                    // No more words to display, return to the previous activity (StartFragment)
-                    finish()
-                }
+        binding.btPrevious.setOnClickListener {
+            if (currentWordIndex > 0) {
+                // Go back to the previous word
+                currentWordIndex--
+                displayWordInfo(wordsWithQuantities[currentWordIndex])
             }
+        }
+    }
 
-            // Handle "Previous" button click
-            binding.btPrevious.setOnClickListener {
-                if (currentWordIndex > 0) {
-                    // Go back to the previous word
-                    currentWordIndex--
-                    displayWordInfo(shuffledWordList[currentWordIndex])
-                }
+    // Function to display the next word
+    private fun displayNextWord() {
+        if (wordsToDisplay.isNotEmpty()) {
+            val word = wordsToDisplay[0]
+            displayWordInfo(word)
+            if (word.quantity == 1) {
+                wordsToDisplay.removeAt(0)
+            } else {
+                word.quantity--
             }
         } else {
-            // Handle the case where no words are available
-            finish()
+            if (wordsToDisplayCopy.isNotEmpty()) {
+                wordsToDisplay.addAll(wordsToDisplayCopy)
+                wordsToDisplayCopy.clear()
+                displayNextWord()
+            } else {
+                // No more words to display
+                finish()
+            }
         }
     }
 
@@ -76,33 +86,6 @@ class DisplayActivity : AppCompatActivity() {
 
         // Retrieve word information using the SearchViewModel
         viewModel.searchWord(word.name)
-
-        // Observe changes in word details and update the meaningsAdapter
-        viewModel.wordDetails.observe(this) { wordDetails ->
-            wordDetails?.let { apiResponseList ->
-                val meanings = apiResponseList.flatMap { apiResponseItem ->
-                    apiResponseItem.meanings
-                }
-
-                val phonetics = apiResponseList.flatMap { apiResponseItem ->
-                    apiResponseItem.phonetics
-                }
-
-                meaningsAdapter.listMeanings = meanings
-                meaningsAdapter.notifyDataSetChanged()
-
-                phoneticsAdapter.listPhonetics = phonetics
-                phoneticsAdapter.notifyDataSetChanged()
-
-                // Handle quantity for the word
-                if (word.quantity > 0) {
-                    word.quantity--
-                } else {
-                    // Remove the word from the shuffled list to prevent further display
-                    shuffledWordList.removeAt(currentWordIndex)
-                }
-            }
-        }
 
         // Set up RecyclerViews for phonetics and meanings (similar to your SearchFragment logic)
         binding.rvPhonetics.apply {
@@ -115,6 +98,26 @@ class DisplayActivity : AppCompatActivity() {
             layoutManager = LinearLayoutManager(this@DisplayActivity)
             adapter = meaningsAdapter
             isNestedScrollingEnabled = false
+        }
+
+        // Observe changes in word details and update the meaningsAdapter
+        viewModel.wordDetails.observe(this) { wordDetails ->
+            wordDetails?.let { apiResponseList ->
+                val meanings = apiResponseList.flatMap { apiResponseItem ->
+                    apiResponseItem.meanings
+                }
+
+                val phonetics = apiResponseList.flatMap { apiResponseItem ->
+                    apiResponseItem.phonetics
+                }
+
+                meaningsAdapter.listMeanings = meanings // Update the list in your adapter
+                meaningsAdapter.notifyDataSetChanged()
+
+                // Update the phonetics adapter with the new data
+                phoneticsAdapter.listPhonetics = phonetics
+                phoneticsAdapter.notifyDataSetChanged() // Notify the phoneticsAdapter that the data has changed()
+            }
         }
     }
 }
