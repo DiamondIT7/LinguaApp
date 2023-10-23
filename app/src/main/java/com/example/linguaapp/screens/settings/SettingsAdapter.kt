@@ -31,12 +31,12 @@ class SettingsAdapter(private val listSettings: MutableList<SWord>): RecyclerVie
         holder.binding.tvWordName.text = word.name
 
         val numberPicker = holder.binding.npWordQuantity
-        numberPicker.minValue = 1
-        numberPicker.maxValue = 10
-        numberPicker.wrapSelectorWheel = false
+        numberPicker.minValue = 0
+        numberPicker.maxValue = 5
+        numberPicker.wrapSelectorWheel = true
 
         // Initially set the value to the word's quantity
-        numberPicker.value = word.quantity
+        numberPicker.value = selectedWordsWithQuantities[word.name] ?: 0 // Use the stored value if available
 
         // Handle NumberPicker value changes
         numberPicker.setOnValueChangedListener { _, _, newVal ->

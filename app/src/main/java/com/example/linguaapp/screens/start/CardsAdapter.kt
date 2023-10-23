@@ -1,4 +1,4 @@
-package com.example.linguaapp.screens
+package com.example.linguaapp.screens.start
 
 import android.view.LayoutInflater
 import android.view.ViewGroup

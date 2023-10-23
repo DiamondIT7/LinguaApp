@@ -2,6 +2,7 @@ package com.example.linguaapp.screens.display
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.linguaapp.databinding.ActivityDisplayBinding
@@ -45,14 +46,22 @@ class DisplayActivity : AppCompatActivity() {
         displayNextWord()
 
         binding.btNext.setOnClickListener {
-            // Display the next word
-            displayNextWord()
+            currentWordIndex++
+            Log.d("DisplayActivity", "Current Word Index: $currentWordIndex")
+            if (currentWordIndex < wordsWithQuantities.size) {
+                displayWordInfo(wordsWithQuantities[currentWordIndex])
+            } else {
+                // All words have been displayed as per the quantity
+                // Return to the previous activity (SettingsActivity)
+                finish()
+            }
         }
 
         binding.btPrevious.setOnClickListener {
             if (currentWordIndex > 0) {
                 // Go back to the previous word
                 currentWordIndex--
+                Log.d("DisplayActivity", "Current Word Index: $currentWordIndex")
                 displayWordInfo(wordsWithQuantities[currentWordIndex])
             }
         }

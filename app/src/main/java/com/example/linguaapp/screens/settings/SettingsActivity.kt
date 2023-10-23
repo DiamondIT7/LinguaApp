@@ -29,27 +29,26 @@ class SettingsActivity : AppCompatActivity() {
         }
 
         binding.btStart.setOnClickListener {
-            binding.btStart.setOnClickListener {
-                val selectedWordsWithQuantities = settingsAdapter.getSelectedWordsWithQuantities()
-                val wordsWithQuantities = mutableListOf<SWord>()
+            val selectedWordsWithQuantities = settingsAdapter.getSelectedWordsWithQuantities()
+            val wordsWithQuantities = mutableListOf<SWord>()
 
-                // Create a list with words repeated according to their quantities
-                for ((word, quantity) in selectedWordsWithQuantities) {
-                    repeat(quantity) {
-                        wordsWithQuantities.add(SWord(word, 1))
-                    }
+            // Create a list with words repeated according to their quantities
+            for ((word, quantity) in selectedWordsWithQuantities) {
+                repeat(quantity) {
+                    wordsWithQuantities.add(SWord(word, 1))
                 }
-
-                // Shuffle the list
-                wordsWithQuantities.shuffle()
-
-                // Serialize the list and pass it as a string extra
-                val wordsWithQuantitiesString = Gson().toJson(wordsWithQuantities)
-                val intent = Intent(this, DisplayActivity::class.java)
-                intent.putExtra("wordsWithQuantities", wordsWithQuantitiesString)
-                startActivity(intent)
             }
+
+            // Shuffle the list
+            wordsWithQuantities.shuffle()
+
+            // Serialize the list and pass it as a string extra
+            val wordsWithQuantitiesString = Gson().toJson(wordsWithQuantities)
+            val intent = Intent(this, DisplayActivity::class.java)
+            intent.putExtra("wordsWithQuantities", wordsWithQuantitiesString)
+            startActivity(intent)
         }
+
 
 
         binding.btBack.setOnClickListener{

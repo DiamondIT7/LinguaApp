@@ -3,7 +3,7 @@ package com.example.linguaapp.model
 import android.os.Parcel
 import android.os.Parcelable
 
-data class SWord(val name: String, var quantity: Int) : Parcelable {
+data class SWord(val name: String, var quantity: Int = 0) : Parcelable {
     constructor(parcel: Parcel) : this(
         parcel.readString() ?: "",
         parcel.readInt()
