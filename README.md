@@ -17,5 +17,5 @@ LinguaDia has 2 main destinations than can be accessible by TabLayout.
 
 # Preview
 <img src="https://github.com/DiamondIT7/LinguaDia/assets/76261223/5c2219a5-de88-411e-8c52-df4500da4f83"  width="200" height="400" />
-<img src="https://github.com/DiamondIT7/LinguaDia/assets/76261223/e5f4cbac-5e59-4867-bb72-6d135ebc413d"  width="200" height="400" />
+<img src="https://github.com/DiamondIT7/LinguaDia/assets/76261223/38bf5d19-cbe4-4673-8ce8-6f7552a7b790"  width="200" height="400" />
 <img src="https://github.com/DiamondIT7/LinguaDia/assets/76261223/f422751a-91c9-4116-a96e-cdd62852425b"  width="200" height="400" />
